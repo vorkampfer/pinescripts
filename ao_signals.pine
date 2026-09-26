@@ -8,7 +8,7 @@ indicator("Andean Oscillator with Signals", overlay = false)
 // Settings
 length = input.int(50, "Length", minval = 1)
 sigLength = input.int(9, "Signal Length", minval = 1)
-dotOpacity = input.int(0, "Dot opacity", minval = 0, maxval = 100, tooltip = "0 is fully bright. Raise this to fade the dots.")
+dotOpacity = input.int(50, "Dot opacity", minval = 0, maxval = 100, tooltip = "0 is fully bright. Raise this to fade the dots.")
 
 // Exponential envelopes
 var alpha = 2 / (length + 1)
@@ -41,5 +41,5 @@ plot(bull, "Bullish Component", #0cb51a)
 plot(bear, "Bearish Component", #ff1100)
 plot(signal, "Signal", #ff5d00)
 
-plotshape(buy, "Buy", shape.circle, location.bottom, buyColor, size = size.large)
-plotshape(sell, "Sell", shape.circle, location.top, sellColor, size = size.large)
+plotshape(buy, "Buy", shape.circle, location.bottom, buyColor, size = size.tiny)
+plotshape(sell, "Sell", shape.circle, location.top, sellColor, size = size.tiny)
