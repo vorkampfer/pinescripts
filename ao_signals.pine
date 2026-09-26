@@ -30,9 +30,10 @@ bull = math.sqrt(dn2 - dn1 * dn1)
 bear = math.sqrt(up2 - up1 * up1)
 signal = ta.ema(math.max(bull, bear), sigLength)
 
-// Buy: green crosses above orange. Sell: red crosses above orange.
+// Green dot: green crosses above orange.
+// Red dot: green crosses below orange. The red line does not create dots.
 buy = ta.crossover(bull, signal)
-sell = ta.crossover(bear, signal)
+sell = ta.crossunder(bull, signal)
 
 buyColor = color.new(#00FF00, dotOpacity)
 sellColor = color.new(#FF0000, dotOpacity)
