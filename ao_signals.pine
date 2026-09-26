@@ -1,0 +1,45 @@
+//@version=5
+// Andean Oscillator with buy and sell dots.
+// Line math is Alex Grover's published script:
+// https://alpaca.markets/learn/andean-oscillator-a-new-technical-indicator-based-on-an-online-algorithm-for-trend-analysis
+// https://www.tradingview.com/script/x9qYvBYN-Andean-Oscillator/
+indicator("Andean Oscillator with Signals", overlay = false)
+
+// Settings
+length = input.int(50, "Length", minval = 1)
+sigLength = input.int(9, "Signal Length", minval = 1)
+dotOpacity = input.int(0, "Dot opacity", minval = 0, maxval = 100, tooltip = "0 is fully bright. Raise this to fade the dots.")
+
+// Exponential envelopes
+var alpha = 2 / (length + 1)
+var float up1 = 0.0
+var float up2 = 0.0
+var float dn1 = 0.0
+var float dn2 = 0.0
+
+C = close
+O = open
+
+up1 := nz(math.max(C, O, up1[1] - (up1[1] - C) * alpha), C)
+up2 := nz(math.max(C * C, O * O, up2[1] - (up2[1] - C * C) * alpha), C * C)
+dn1 := nz(math.min(C, O, dn1[1] + (C - dn1[1]) * alpha), C)
+dn2 := nz(math.min(C * C, O * O, dn2[1] + (C * C - dn2[1]) * alpha), C * C)
+
+// Components. Green is bull, red is bear, orange is the signal line.
+bull = math.sqrt(dn2 - dn1 * dn1)
+bear = math.sqrt(up2 - up1 * up1)
+signal = ta.ema(math.max(bull, bear), sigLength)
+
+// Buy: green crosses above orange. Sell: red crosses above orange.
+buy = ta.crossover(bull, signal)
+sell = ta.crossover(bear, signal)
+
+buyColor = color.new(#00FF00, dotOpacity)
+sellColor = color.new(#FF0000, dotOpacity)
+
+plot(bull, "Bullish Component", #0cb51a)
+plot(bear, "Bearish Component", #ff1100)
+plot(signal, "Signal", #ff5d00)
+
+plotshape(buy, "Buy", shape.circle, location.bottom, buyColor, size = size.large)
+plotshape(sell, "Sell", shape.circle, location.top, sellColor, size = size.large)
