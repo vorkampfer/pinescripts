@@ -53,7 +53,7 @@ zlema(src, length) =>
 dsl_lines(src, length)=>
     up  = 0.
     dn  = 0.
-    up := (src > ta.sma(src, length)) ? nz(up[1]) + dsl_mode / length * (src - nz(up[1])) : nz(up[1])  
+    up := (src > ta.sma(src, length)) ? nz(up[1]) + dsl_mode / length * (src - nz(up[1])) : nz(up[1])
     dn := (src < ta.sma(src, length)) ? nz(dn[1]) + dsl_mode / length * (src - nz(dn[1])) : nz(dn[1])
     [up, dn]
 
@@ -103,11 +103,11 @@ bgcolor(dn ? color.new(color_dn, 90) : na, force_overlay = true, editable = fals
 // Color candles based on signals
 candle_col = up ? color.new(color_up, 0) : dn ? color.new(color_dn, 0) : na
 
-plotcandle(open, high, low, close, "", 
-     candle_col, 
-     candle_col, 
-     bordercolor   = candle_col, 
-     force_overlay = true, 
+plotcandle(open, high, low, close, "",
+     candle_col,
+     candle_col,
+     bordercolor   = candle_col,
+     force_overlay = true,
      editable      = false)
 
 // Plot horizontal lines for visual reference
@@ -120,6 +120,6 @@ fill(m, h, 120, 50, color_up, na, editable = false)
 fill(m, l, 50, -20, na, color_dn, editable = false)
 
 // Midline at the bullish/bearish crossover
-plot(50, "Midline", color = color.new(mid_color, 100 - mid_op), linestyle = plot.linestyle_dashed)
+plot(50, "Midline", color = dashed ? color.new(mid_color, 100 - mid_op) : na)
 
 // ====================================================================================================================}
